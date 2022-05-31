@@ -1,0 +1,590 @@
+\documentclass[11pt,a4paper,]{article}
+\usepackage{lmodern}
+
+\usepackage{amssymb,amsmath,bm}
+\usepackage{ifxetex,ifluatex}
+\usepackage{algorithm}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{algpseudocode}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
+\usepackage[unicode=true]{hyperref}
+\hypersetup{
+            pdftitle={Response to AEMO's Proposed Instruments for Efficient Management of System Strength Rule},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{geometry}
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+\usepackage[style=ieee,]{biblatex}
+%\addbibresource{references.bib}
+\usepackage{longtable,booktabs}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{long table}}{}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\newenvironment{answer}%
+{\vspace*{3pt}\par\begin{lrbox}{\mybox}\quad\begin{minipage}{.89\linewidth}\color{black}\setlength{\parskip}{10pt plus 1pt minus 1pt}\vspace*{-.7\baselineskip}}%
+{\vspace*{.3\baselineskip}\end{minipage}\end{lrbox}%
+\settodepth{\mydepth}{\usebox{\mybox}}%
+\settoheight{\myheight}{\usebox{\mybox}}%
+\addtolength{\myheight}{\mydepth}%
+\noindent\makebox[0pt]{%
+  \color{black}\hspace{-0pt}\rule[-\mydepth]{1pt}{\myheight}}%
+  \usebox{\mybox}%
+  \vspace*{3pt}}
+
+\usepackage[toc,page]{appendix}
+
+
+
+\title{Response to AEMO's Proposed Instruments for Efficient Management of System Strength Rule}
+
+%% MONASH STUFF
+
+%% CAPTIONS
+\RequirePackage{caption}
+\DeclareCaptionStyle{italic}[justification=centering]
+ {labelfont={bf},textfont={it},labelsep=colon}
+\captionsetup[figure]{style=italic,format=hang,singlelinecheck=true}
+\captionsetup[table]{style=italic,format=hang,singlelinecheck=true}
+
+%% FONT
+\RequirePackage{bera}
+\RequirePackage{mathpazo}
+
+%% HEADERS AND FOOTERS
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}
+\rfoot{\Large\sffamily\raisebox{-0.1cm}{\textbf{\thepage}}}
+\makeatletter
+\lhead{\textsf{\expandafter{\@title}}}
+\makeatother
+\rhead{}
+\cfoot{}
+\setlength{\headheight}{15pt}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancypagestyle{plain}{%
+\fancyhf{} % clear all header and footer fields
+\fancyfoot[C]{\sffamily\thepage} % except the center
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}}
+
+%% MATHS
+\RequirePackage{bm,amsmath}
+\allowdisplaybreaks
+
+%% GRAPHICS
+\RequirePackage{graphicx}
+\setcounter{topnumber}{2}
+\setcounter{bottomnumber}{2}
+\setcounter{totalnumber}{4}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.85}
+\renewcommand{\textfraction}{0.15}
+\renewcommand{\floatpagefraction}{0.8}
+
+%\RequirePackage[section]{placeins}
+
+%% SECTION TITLES
+\RequirePackage[compact,sf,bf]{titlesec}
+\titleformat{\section}[block]
+  {\fontsize{15}{17}\bfseries\sffamily}
+  {\thesection}
+  {0.4em}{}
+\titleformat{\subsection}[block]
+  {\fontsize{12}{14}\bfseries\sffamily}
+  {\thesubsection}
+  {0.4em}{}
+\titlespacing{\section}{0pt}{*5}{*1}
+\titlespacing{\subsection}{0pt}{*2}{*0.2}
+
+
+%% TITLE PAGE
+\def\Date{\number\day}
+\def\Month{\ifcase\month\or
+ January\or February\or March\or April\or May\or June\or
+ July\or August\or September\or October\or November\or December\fi}
+\def\Year{\number\year}
+
+\makeatletter
+\def\wp#1{\gdef\@wp{#1}}\def\@wp{??/??}
+\def\jel#1{\gdef\@jel{#1}}\def\@jel{??}
+\def\showjel{{\large\textsf{\textbf{JEL classification:}}~\@jel}}
+\def\nojel{\def\showjel{}}
+\def\addresses#1{\gdef\@addresses{#1}}\def\@addresses{??}
+\def\cover{{\sffamily\setcounter{page}{0}
+        \thispagestyle{empty}
+%        \placefig{2}{1.5}{width=5cm}{monash2}
+%        \placefig{16.9}{1.5}{width=2.1cm}{MBusSchool}
+%        \begin{textblock}{4}(16.9,4)ISSN 1440-771X\end{textblock}
+%        \begin{textblock}{7}(12.7,27.9)\hfill
+%        \includegraphics[height=0.7cm]{AACSB}~~~
+%        \includegraphics[height=0.7cm]{EQUIS}~~~
+%        \includegraphics[height=0.7cm]{AMBA}
+%        \end{textblock}
+        \vspace*{1cm}
+        \begin{center}\Large
+%        Department of Econometrics and Business Statistics\\[.5cm]
+%        \footnotesize http://monash.edu/business/ebs/research/publications
+        \end{center}\vspace{1cm}
+        \begin{center}
+        \fbox{\parbox{14cm}{\begin{onehalfspace}\centering\Huge\vspace*{0.3cm}
+                \textsf{\textbf{\expandafter{\@title}}}
+				\end{onehalfspace}
+        }}
+        \end{center}
+		\vspace{3cm}
+		\hspace{1cm}\parbox{14cm}{\sffamily\large\@addresses}\vfill
+		\hspace{1cm}\parbox{7cm}{\sffamily\large \textbf{Dr Reza Razzaghi}\newline Monash University}%
+		\parbox{7cm}{\sffamily\large \textbf{Professor Rob Hyndman}\newline Monash University}\vspace{5cm}
+        \vfill
+		
+
+                \begin{center}\Large
+                \Month~\Year\\[1cm]
+%                Working Paper \@wp
+        \end{center}
+		%\vspace*{2cm}
+		}}
+\def\pageone{{\sffamily\setstretch{1}%
+        \thispagestyle{empty}%
+        \vbox to \textheight{%
+        \raggedright\baselineskip=1.2cm
+     {\fontsize{24.88}{30}\sffamily\textbf{\expandafter{\@title}}}
+        \vspace{2cm}\par
+        \hspace{1cm}\parbox{14cm}{\sffamily\large\@addresses}\vspace{1cm}\vfill
+        \hspace{1cm}{\large\Date~\Month~\Year}\\[1cm]
+        \hspace{1cm}\showjel\vss}}}
+\def\blindtitle{{\sffamily
+     \thispagestyle{plain}%\raggedright\baselineskip=1.2cm
+%     {\LARGE\sffamily\textbf{\expandafter{\@title}}}\vspace{0.4cm}\par\rule{\textwidth}{.4pt}
+        }}
+\def\titlepage{{\cover\newpage\blindtitle}}
+
+\def\blind{\def\titlepage{{\blindtitle}}\let\maketitle\blindtitle}
+\def\titlepageonly{\def\titlepage{{\pageone\end{document}}}}
+\def\nocover{\def\titlepage{{\pageone\newpage\blindtitle}}\let\maketitle\titlepage}
+\let\maketitle\titlepage
+\makeatother
+
+%% SPACING
+\RequirePackage{setspace}
+\spacing{1.5}
+
+%% LINE AND PAGE BREAKING
+\sloppy
+\clubpenalty = 10000
+\widowpenalty = 10000
+\brokenpenalty = 10000
+\RequirePackage{microtype}
+
+%% PARAGRAPH BREAKS
+\setlength{\parskip}{1.4ex}
+\setlength{\parindent}{0em}
+
+%% HYPERLINKS
+\RequirePackage{xcolor} % Needed for links
+\definecolor{darkblue}{rgb}{0,0,.6}
+\RequirePackage{url}
+
+\makeatletter
+\@ifpackageloaded{hyperref}{}{\RequirePackage{hyperref}}
+\makeatother
+\hypersetup{
+     citecolor=0 0 0,
+     breaklinks=true,
+     bookmarksopen=true,
+     bookmarksnumbered=true,
+     linkcolor=darkblue,
+     urlcolor=blue,
+     citecolor=darkblue,
+     colorlinks=true}
+
+%% KEYWORDS
+\newenvironment{keywords}{\par\vspace{0.5cm}\noindent{\sffamily\textbf{Keywords:}}}{\vspace{0.25cm}\par\hrule\vspace{0.5cm}\par}
+
+%% ABSTRACT
+\renewenvironment{abstract}{\begin{minipage}{\textwidth}\parskip=1.4ex\noindent
+\hrule\vspace{0.1cm}\par{\sffamily\textbf{\abstractname}}\newline}
+  {\end{minipage}}
+
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage[showonlyrefs]{mathtools}
+\usepackage[no-weekday]{eukdate}
+
+%% BIBLIOGRAPHY
+
+\makeatletter
+\@ifpackageloaded{biblatex}{}{\usepackage[style=authoryear-comp, backend=biber, natbib=true]{biblatex}}
+\makeatother
+\ExecuteBibliographyOptions{bibencoding=utf8,minnames=1,maxnames=3, maxbibnames=99,dashed=false,terseinits=true,giveninits=true,uniquename=false,uniquelist=false,doi=false, isbn=false,url=true,sortcites=false}
+
+\DeclareFieldFormat{url}{\texttt{\url{#1}}}
+\DeclareFieldFormat[article]{pages}{#1}
+\DeclareFieldFormat[inproceedings]{pages}{\lowercase{pp.}#1}
+\DeclareFieldFormat[incollection]{pages}{\lowercase{pp.}#1}
+\DeclareFieldFormat[article]{volume}{\mkbibbold{#1}}
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+\DeclareFieldFormat[article]{title}{\MakeCapital{#1}}
+\DeclareFieldFormat[inproceedings]{title}{#1}
+\DeclareFieldFormat{shorthandwidth}{#1}
+% No dot before number of articles
+\usepackage{xpatch}
+\xpatchbibmacro{volume+number+eid}{\setunit*{\adddot}}{}{}{}
+% Remove In: for an article.
+\renewbibmacro{in:}{%
+  \ifentrytype{article}{}{%
+  \printtext{\bibstring{in}\intitlepunct}}}
+
+\makeatletter
+\DeclareDelimFormat[cbx@textcite]{nameyeardelim}{\addspace}
+\makeatother
+\renewcommand*{\finalnamedelim}{%
+  %\ifnumgreater{\value{liststop}}{2}{\finalandcomma}{}% there really should be no funny Oxford comma business here
+  \addspace\&\space}
+
+
+\wp{no/yr}
+\nojel
+
+\RequirePackage[absolute,overlay]{textpos}
+\setlength{\TPHorizModule}{1cm}
+\setlength{\TPVertModule}{1cm}
+\def\placefig#1#2#3#4{\begin{textblock}{.1}(#1,#2)\rlap{\includegraphics[#3]{#4}}\end{textblock}}
+
+
+
+
+\author{Lakshan~Bernard}
+\addresses{\textbf{Lakshan Bernard}\newline
+PhD student, Zema Energy Studies\newline
+Monash University
+\newline{Email: \href{mailto:lakshan.bernard@monash.edu}{\nolinkurl{lakshan.bernard@monash.edu}}}\\[1cm]
+}
+
+\date{\sf\Date~\Month~\Year}
+\makeatletter
+% \lfoot{\sf Bernard: \@date}
+\makeatother
+
+%% Any special functions or other packages can be loaded here.
+\usepackage{tikz}
+\usepackage[american,siunitx]{circuitikz}
+\usetikzlibrary{trees,arrows,positioning, fit, calc}
+\usepackage{pgfplots}
+\usepackage{harpoon}
+\usepackage{longtable}
+\usepackage{pgfgantt}
+\usepackage{pdflscape}
+
+
+\addbibresource{references.bib}
+
+
+
+\begin{document}
+\maketitle
+
+\section*{Executive Summary}
+On 26 April 2022, the Australian Energy Market Operator (AEMO) published an initial issue paper, titled \emph{Amendments to AEMO instruments for Efficient Management of System Strength Rule} \cite{aemossrmiag}. The Issues Paper raised 47 explicit questions. This report aims to provide a considered opinion for the following two questions:
+
+\begin{itemize}
+\item{Question 12. Do stakeholders consider the proposed description for stable voltage waveforms to be comprehensive? Are there any recommended additions or deletions? If so, why?}
+\item{Question 14. What do stakeholders consider to be the pros and cons of the three proposed options for assessing future voltage waveform stability? Should any other options be considered? If so, what options?}
+\end{itemize}
+
+Regarding Question 12, three of the four proposed criteria for stable voltage waveform are defined in terms of phasor quantities. To avoid any confusions, the relationship between voltage phasor and the voltage waveform should be clarified. For example, observing oscillations of the Root Mean Square (RMS) corresponds to sideband frequencies in the voltage waveform.
+
+In the other criterion, the phrasing ``instantaneous voltage waveform ... as close to 50 Hz sinusoidal as possible'' is slightly vague. This can be improved by specifying ``closeness'' as a mathematical norm. An interpretable and readily computable option is to calculate the residuals when the instantaneous voltage waveform is fitted to a pure 50Hz sinusoid.
+
+Regarding Question 14, assessment of future network configurations and dispatch scenarios is a balance between computational complexity and detail. Most importantly, the mechanism of instability in weak grids often involves the control systems of the grid following inverter based resources (IBR). If the outer loop is involved, then the proposed option of calculating sensitivity of the voltage phasor to the (active and reactive) power flows is a reasonable proxy for system strength. However, for instabilities caused by the inner loop or phase locked loop (PLL) issues, then the proposed phasor based metrics become less obvious.
+
+In the proposed options, the power system is modelled by either phasor or Electromagnetic Transient (EMT) modelling. Another option is state space representation (SSR). This has the advantage of being set in the time domain, thus considers the voltage waveform unlike phasor models. Compared with EMT simulations, SSR is suited to analyse small signal stability using eigenvalue analysis. Thus, it would be beneficial to have a SSR of the National Electricity Market (NEM) for the purpose of system strength studies.
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+In the context of Australia's National Electricity Market (NEM), the Australian Energy Market Commission (AEMC) updated the definition of system strength as follows \cite{aemcnem}:
+
+\begin{tabular}{l|p{0.9\textwidth}}
+\quad & \small{System strength relates to the stability of the voltage waveform. Along with frequency, voltage is a core electrical quality that must be maintained for a stable power system. A smooth, consistent and predictable voltage waveform is critical to the power system's voltage remaining within the parameters required for a safe transfer of energy from generators to consumers. A strong system with a stable voltage is particularly important for supporting the decarbonisation of the power sector that is currently underway.}
+\end{tabular}
+
+The emphasis on ``voltage waveform'' is important. Practically, a voltage waveform is the shape of a signal that would appear on an oscilloscope. Mathematically, we can consider voltage to be a real-valued function of time. A potential confusion is that electrical engineers often talk about ``voltage phasors''. Voltage phasors are not real numbers (they are complex numbers). Thus, it must be emphasised that the AEMC working definition of system strength is \emph{not} in terms of voltage phasors.
+
+Instead, the definition is explicit that the time domain voltage should be considered for system strength studies (as opposed to phasor domain voltage). This is a reflection that time domain simulations are often required to accurately evaluate system strength, whereas phasor domain simulations can be insufficient on their own\cite{emin2021system}.
+
+The significance of the voltage waveform to Inverter Based Resources (IBRs), is that the voltage waveform is an input to the control system of the IBRs. In particular, grid following IBRs, estimate the phase at their point of connection and use this to set their gating signals. Hence, if the voltage waveform at the point of connection is not sinusoidal, there is a possibility that grid-following IBR may malfunction. Such a malfunction may pollute the grid with non-fundamental frequency oscillations, which may in turn disturb the voltage waveform at nearby IBRs. Thus, the rationale of strengthening the grid at locations where IBRs are connected is to avoid this type of insecurity.
+
+The 2021 AEMC definition of system strength poses some unique practical challenges which were raised in the AEMO issue paper: How exactly does one quantify stability of a voltage waveform? How exactly does one assess voltage waveforms in practice? These correspond to Question 12 and 14 of the Issues Paper \cite{aemossrmiag}. The aim of this report is to discuss the pros and cons of AEMO's proposed framework, and offer potential improvements where applicable.
+
+\newpage
+\section{Criteria for a stable voltage waveform}
+
+In the considered Issues Paper \cite{aemossrmiag}, AEMO proposes four criteria to assess the stability of voltage waveform and asks the following question:
+
+\begin{tabular}{l|p{0.9\textwidth}}
+\quad & Question 12. Do stakeholders consider the proposed description for stable voltage waveforms to be comprehensive? Are there any recommended additions or deletions? If so, why?
+\end{tabular}
+
+
+\subsection{Item 1 -- Positive Sequence RMS voltage}
+
+Since positive sequence RMS voltage is a phasor quantity, it is important to consider what the mapping onto the actual voltage waveform is. For example, suppose the RMS voltage is larger than nominal. This could arise from multiple different changes in the voltage waveform:
+
+\begin{itemize}
+\tightlist
+\item
+  Increasing amplitude of the 50Hz sinusoid in voltage waveform \(\implies\) RMS voltage will increase
+\item
+  A DC offset of the voltage waveform \(\implies\) RMS voltage will increase
+\item
+  A harmonic component is present in the voltage waveform \(\implies\) RMS voltage will increase
+\end{itemize}
+
+Clearly, there is not a one to one mapping between RMS voltage and voltage waveform. Hence, if using RMS voltage as a proxy for voltage waveform, if the RMS voltage shows instability, then further investigation is required to determine what is happening to the voltage waveform.
+
+\subsection{Item 2 -- Voltage Phase Angle}
+
+Despite being a phasor quantity, the voltage phase angle is very relevant to the stability of grid following IBRs. This is because grid following IBRs measure the voltage waveform at the point of connection and estimate the phase angle which is subsequently used to set the gating signals. Thus, to ensure proper operation of grid following IBR, it is important that the phase angle does not change too rapidly or erratically.
+
+The proposed requirement of \(45^\circ\) in 0.5 seconds, corresponds to a Rate of Change of Frequency (ROCOF) of 0.5 Hz/s. According to a 2017 report \cite{ge2017advisory}, 0.5Hz/s is a safe bound for the ROCOF.
+
+\subsection{Item 3 -- Three Phase Instantaneous Voltage}
+
+Monitoring the instantaneous voltage is very important to assess the stability of the voltage waveform. However, the sampling frequency (\(T_s\)) should also be specified since, due to Nyquist Criterion, this limits the frequency components that can be detected.
+
+Moreover, it is slightly vague how exactly the ``closeness'' to a pure 50 Hz sinusoid is evaluated. A simple regression based method is presented below.
+
+\[
+\begin{aligned}
+v_{\text{AB}}[n] &\approx a\cdot\cos\left(2\pi f_0\cdot nT_s\right) + b\cdot\sin\left(2\pi f_0\cdot nT_s\right) \\ \\
+\implies
+\begin{pmatrix}
+v_{\text{AB}}[1] \\
+v_{\text{AB}}[2] \\
+\vdots \\
+v_{\text{AB}}[N_S]
+\end{pmatrix}
+&\approx
+\begin{pmatrix}
+\cos\left(2\pi f_0\cdot T_s\right) & \sin\left(2\pi f_0\cdot T_s\right) \\
+\cos\left(2\pi f_0\cdot 2T_s\right) & \sin\left(2\pi f_0\cdot 2T_s\right) \\
+\vdots & \vdots \\
+\cos\left(2\pi f_0\cdot N_sT_s\right) & \sin\left(2\pi f_0\cdot N_sT_s\right)
+\end{pmatrix}
+\begin{pmatrix}
+a \\ b
+\end{pmatrix}
+\end{aligned}
+\]
+where \(f_0=50\)Hz is the fundamental frequency of the grid, \(v_{\text{AB}}[n]\) is the measured line to line voltage at discrete time \(n\) and \(N_s\) is the number samples in a window. Mathematically, the total residuals to this regression is the ``closeness'' (as a mathematical norm) between the measured instantaneous voltages and a pure sinusoid.
+
+Moreover, as derived in Appendix A, this calculation can be expressed by a matrix multiplication with a closed form solution. Thus, it is applicable to applied in real time to monitor the voltage waveform.
+
+\subsection{Item 4 -- Oscillations of the RMS Voltage}
+
+As described for Item 1, when using RMS voltage, it is important to consider how this maps to the voltage waveform. For example, if 16-19Hz oscillations are observed in the RMS voltage -- as has been the case in West Murray region -- then what type of oscillations are occurring to the voltage waveform?
+
+In practice, it also needs to considered, that many devices that measure RMS voltage (e.g.~Phasor Measurement Units) filter the voltage waveform to extract the fundamental phasor. Thus, by design, the measured RMS voltage may leave out distortions in the actual voltage waveform.
+
+To avoid this, the RMS measurements should ideally come from True RMS meters. That way, it can be certain if there are oscillations in the voltage waveform, the True RMS voltage will also be affected.
+
+\newpage
+
+\section{Assessing Future Voltage Waveform Stability}
+
+In the considered Issues Paper \cite{aemossrmiag}, AEMO proposes three options for assessing future waveform stability and asks the following question:
+
+\begin{tabular}{l|p{0.9\textwidth}}
+\quad & Question 14. What do stakeholders consider to be the pros and cons of the three proposed options for assessing future voltage waveform stability? Should any other options be considered? If so, what options?
+\end{tabular}
+
+\subsection{Option 1 -- EMT simulation with generic model placeholders}
+The main advantage of this option is that the voltage waveforms are directly calculated.
+
+However, oscillatory instability in weak grids is highly dependent on the tuning of the IBRs (i.e. gains on the PLL, inner and outer loops). Thus, a comprehensive analysis would require running EMT simulations for different tunings of the IBRs. Assuming the NEM will contain many hundreds of IBRs in the future, this means there are thousands of parameters to be varied, thus it is computationally expensive to use EMT simulation alone.
+
+Instead, it would be preferable to utilise a less resource intensive methodology to assess the bulk of the cases and reserve EMT assessment for cases that are marginal.
+
+\subsection{Option 2 -- RMS simulation to calculate Additional Fault Levels (AFL)}
+The main advantage of this option is that it is computationally easier to calculate fault levels than running EMT simulations. Furthermore, by considering fault levels, it gives some intepretability about the voltage stability after a disturbance.
+
+One of the difficulties of this option is determining the minimum Short Circuit Ratio (SCR) for each IBR. Another limitation of this method it that it is not intuitive how AFL is related to the voltage stability when there is no disturbance in the network. In the West Murry Region, there have been oscillations observed even without disturbances. Thus, an AFL-based assessment might not pick up on this assessment.
+
+Ultimately, this is a proxy method since the voltage waveform is not being directly assessed. In addition, some of the dynamics (i.e. control loops) of the system that give rise to weak grid instability have been abstracted away to reduce computational complexity.
+
+\subsection{Option 3 -- RMS simulation to calculate voltage sensitivities to power flows}
+This option is also based on phasor model of the power system, hence it is computationally easier than running EMT simulations. Compared with AFL, it is more mathematically intuitive how the voltage phasor sensitivities to power flow contributes to instability in a weak grid, even without disturbances. One hypothesis \cite{sewdien2020critical} is that nearby IBRs can interact through their outer control loops if they are both trying to control the power of the same busbar. Thus having a voltage phasor that is not sensitive to changes in power flow indicates that the grid is strong and that IBRs are effectively decoupled from each other in this region.
+
+The main limitation of this option is that, since it considers the phasor voltage, it is a not obvious what are the possible distortions to the actual voltage waveform. Thus, it is difficult for this option to assess instabilities caused by the PLL or the inner control loop.
+
+\subsection{Another option -- State Space Representation (SSR)}
+In addition to the options proposed by AEMO (which are based on phasor and EMT modelling), it is also worthwhile considering the State Space Representation (SSR) of the power system, which has the form:
+
+$$
+\bm{x}'(t) = A\bm{x}(t) + B\bm{u}(t)
+$$
+
+where $\bm{x}$ is the state vector and includes all the voltage waveforms. The matrices $A$ and $B$ define the dynamics of the system. The vector $\bm{u}$ contains the inputs -- sinusoidal functions (from synchronous resources) and pulse trains (from IBR).
+
+If the power system is expressed in such a SSR, then the $k^\text{th}$ voltage waveform has an analytic solution of the form:
+
+\begin{align*}
+x_k(t) = &\phantom{+}\textcolor{red}{\overbracket{\left(\sum_{\ell=1}^n \alpha_{k,\ell}\,e^{\lambda_\ell t}\right)}} +\cdots\\
+& + \textcolor{violet}{\underbracket{\beta_\text{cos,k}\cos\left(2\pi f_0 t\right)+ \beta_\text{sin,k}\sin\left(2\pi f_0 t\right)}}+\cdots\\
+& + \textcolor{blue}{\underbracket{g_{\text{flw},k}(t)}}\quad + \quad \textcolor{teal}{\underbracket{g_{\text{frm},k}(t)}}
+\end{align*}
+
+\begin{tikzpicture}[semithick,remember picture,overlay,shift=(current page.north west)]
+\path (current page.center) -- ++(-1.6,-6.6) coordinate(x1);
+\node [anchor=south,opacity=.4] at (x1) {\textcolor{red}{Transient Response}};
+\draw [-stealth, line width=2pt, red, opacity=.4] (x1) -- ++(0,-0.6);
+
+\path (current page.center) -- ++(-2.2,-11.5) coordinate(x2);
+\node [anchor=north,opacity=.4] at (x2) {\textcolor{blue}{Grid-following}};
+\node [anchor=north,opacity=.4,yshift=-12pt] at (x2) {\textcolor{blue}{pulse train}};
+\draw [-stealth, line width=2pt, blue, opacity=.4] (x2) -- ++(0,0.6);
+
+\path (current page.center) -- ++(0.65,-11.5) coordinate(x3);
+\node [anchor=north,opacity=.4] at (x3) {\textcolor{teal}{Grid-forming}};
+\node [anchor=north,opacity=.4,yshift=-12pt] at (x3) {\textcolor{teal}{pulse train}};
+\draw [-stealth, line width=2pt, teal, opacity=.4] (x3) -- ++(0,0.6);
+
+\path (current page.center) -- ++(3.0,-11.5) coordinate(x4);
+\node [anchor=north,opacity=.4] at (x4) {\textcolor{violet}{Pure}};
+\node [anchor=north,opacity=.4,yshift=-12pt] at (x4) {\textcolor{violet}{Sinusoidal}};
+\draw [-stealth, line width=2pt, violet, opacity=.4] (x4) -- ++(0,1.6);
+
+\end{tikzpicture}
+
+\newpage
+
+Thus, the different components (transient, sinusoidal and switching) of the waveform can be calculated. This is mathematically expedient to assess the composition of the voltage waveform. For example, the transient component becomes unstable when the modes $\lambda_\ell$ (which are the eigenvalues of $A$ matrix have a nonnegative real part. The participation factors $\alpha_{k,\ell}$ are also useful in assessing the transient response to see which waveforms are affected by which modes.
+
+For a particular voltage waveform, if the magnitude of the sinusoidal component is relatively large, it indicates that busbar is in the proximity of synchronous resources (e.g. synchronous machines and load centres) which are conventional sources of system strength.
+
+Power electronic resources result in pulse trains. It is also possible to distinguish between grid following and grid forming IBR, and find the contribution of each to the voltage waveform.
+
+Considering the insights that SSR provides about the voltage waveforms, it might be valuable to include state space studies as an addition to the system strength framework.
+
+
+\addcontentsline{toc}{section}{References}
+\printbibliography
+
+\newpage
+
+
+\begin{appendices}
+\section{Closeness to 50Hz Sinusoid}
+This appendix describes a mathematical method to evaluate how close measurements of an instantaneous voltage waveform are to the pure sinusoid at fundamental frequency. Let us consider the AB line to line voltage, but this method can be applied equally well to the BC line to line voltage and the CA line to line voltage. It will also work on line to neutral voltages.
+
+Let us suppose the instantaneous voltage is measured every $T_s$ seconds. The measurements form a discrete time signal, thus $v_\text{AB}[n]$ denotes the value of the voltage at time $nT_s$ seconds. Now, if the instantaneous voltage was a pure sinusoid at fundamental frequency $f_0$ the following equation will hold for all values of $n$:
+
+$$
+v_\text{AB}[n] = a\cdot\cos\left(2\pi f_0\cdot nT_s\right) + b\cdot\sin\left(2\pi f_0\cdot nT_s\right)
+$$
+where the scalars $a,b\in\mathbb{R}$ are coefficients that determine the amplitude $\left(\sqrt{a^2+b^2}\right)$ and phase angle $\left(\mathrm{atan2}(b,a)\right)$ of the sinusoid. We do a regression to estimate $a,b$, thus the total residual will tell us how ``close'' (as a mathematical norm) the measured instantaneous voltage is to the pure sinusoid.
+
+Let us consider a window of $N_s$ measurements. Thus, we have a linear system of $N_s$ equations which can conveniently be expressed in matrix notation as follows:
+
+$$
+\underbrace{
+\begin{pmatrix}
+v_{\text{AB}}[1] \\
+v_{\text{AB}}[2] \\
+\vdots \\
+v_{\text{AB}}[N_S]
+\end{pmatrix}}_{\bm{v}}
+=
+\underbrace{\begin{pmatrix}
+\cos\left(2\pi f_0\cdot T_s\right) & \sin\left(2\pi f_0\cdot T_s\right) \\
+\cos\left(2\pi f_0\cdot 2T_s\right) & \sin\left(2\pi f_0\cdot 2T_s\right) \\
+\vdots & \vdots \\
+\cos\left(2\pi f_0\cdot N_sT_s\right) & \sin\left(2\pi f_0\cdot N_sT_s\right)
+\end{pmatrix}}_M
+\begin{pmatrix}
+a \\ b
+\end{pmatrix}
+$$
+
+Note that $M$ is $N_s\times 2$ matrix that is constant. In order to solve this in a least squares sense we need to evaluate:
+
+$$
+\begin{pmatrix}
+a \\ b
+\end{pmatrix} = \left(M^\mathrm{T}M\right)^{-1}M^\mathrm{T}\,\bm{v}
+$$
+where $M^\mathrm{T}$ is the transpose of $M$. As such, $M^\mathrm{T}M$ is a $2\times 2$ matrix which is simple to invert. Finally, the residuals are calculated as:
+
+$$
+\bm{d} = \left(M\left(M^\mathrm{T}M\right)^{-1}M^\mathrm{T}\right)\bm{v} - \bm{v}
+$$
+and the squared error is simply $\varepsilon = \bm{d}^\mathrm{T}\bm{d}$. So $\varepsilon$ can be used to quantify how close the voltage waveform is to a pure sinusoid.
+
+The complete algorithm to find $\varepsilon$ is given below:
+
+\begin{algorithm}
+\caption{Closeness of voltage waveform to pure sinusoid}\label{alg:cap}
+
+\begin{algorithmic}
+\State Define constant matrix $M$ 
+\State Define constant matrix $S\leftarrow M\left(M^\mathrm{T}M\right)^{-1}M^\mathrm{T} - I$
+\State LOOP:
+\State $\bm{v}\leftarrow N_s$ most recent voltage measurement
+\State $\bm{d}\leftarrow S\bm{v}\quad\quad\,\,$ \textcolor{teal}{//$2N_s^2-N_s$ FLOP}
+\State $\varepsilon\leftarrow \bm{d}^\mathrm{T}\bm{d}\quad\quad$ \textcolor{teal}{//$2N_s-1\,\,\,\,\,$ FLOP}
+\State Wait $T_s$ seconds for new measurement
+\State GOTO LOOP
+\end{algorithmic}
+\end{algorithm}
+
+Note that $I$ corresponds to a $N_s\times N_s$ identity matrix.
+
+Within the loop, we are performing $2N_s^2 + N_s -1$ floating point operations. For example, if we are considering a window of $N_s=20$ measurements and a sampling interval of $T_S = 1$ millisecond, then that means each loop we need to perform 819 floating point operations, implying the processor needs to be capable of $819000$ floating point operations per second (FLOPS). Modern processors are capable of billions of FLOPS thus it is clear that the proposed algorithm is computationally feasible.
+
+
+\end{appendices}
+
+
+\end{document}
